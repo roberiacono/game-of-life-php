@@ -4,8 +4,8 @@ class Life {
 	public $grid = array();
 
 	public function createGrid() {
-		$x = 10;
-		$y = 20;
+		$x = 5;
+		$y = 10;
 		for ( $i = 0; $i < $x; $i++ ) {
 			$state = array();
 			for ( $j = 0; $j < $y; $j++ ) {
@@ -13,14 +13,22 @@ class Life {
 			}
 			$this->grid[ $i ] = $state;
 		}
+
+		// Glider.
 		$this->grid[2][7] = 1;
 		$this->grid[3][7] = 1;
 		$this->grid[4][7] = 1;
 		$this->grid[3][5] = 1;
 		$this->grid[4][6] = 1;
+
+		/*
+		// Blinker
+		$this->grid[0][0] = 1;
+		$this->grid[0][1] = 1;
+		$this->grid[0][2] = 1; */
 	}
 
-	public function countAdjacentCells( $x, $y ) {
+	public function countAdjacentCells( $x, $y, $xMax, $yMax ) {
 		$count = 0;
 
 		$coordinatesArray = array(
@@ -35,9 +43,12 @@ class Life {
 		);
 
 		foreach ( $coordinatesArray as $coordinate ) {
+			// x=4, y=1 ,    xMax = 5, yMax = 10
+			$coordinateX = $x > 0 && $x < $xMax - 1 ? $x + $coordinate[0] : ( $x + $coordinate[0] + $xMax ) % $xMax;
+			$coordinateY = $y > 0 && $y < $yMax - 1 ? $y + $coordinate[1] : ( $y + $coordinate[1] + $yMax ) % $yMax;
 			if (
-				isset( $this->grid[ $x + $coordinate[0] ][ $y + $coordinate[1] ] ) &&
-				1 == $this->grid[ $x + $coordinate[0] ][ $y + $coordinate[1] ]
+				isset( $this->grid[ $coordinateX ][ $coordinateY ] ) &&
+				1 == $this->grid[ $coordinateX ][ $coordinateY ]
 			) {
 				$count = $count + 1;
 			}
@@ -48,10 +59,18 @@ class Life {
 	public function runLife() {
 		$newGrid = array();
 
+		// echo count( $this->grid );
+
 		foreach ( $this->grid as $i => $width ) {
 			$newGrid[ $i ] = array();
 			foreach ( $width as $y => $height ) {
-				$count = $this->countAdjacentCells( $i, $y );
+				$count = $this->countAdjacentCells(
+					$i,
+					$y,
+					count( $this->grid ),
+					count( $width )
+				);
+				// echo $i . ', ' . $y . ' count: ' . $count . PHP_EOL;
 				$state = $this->grid[ $i ][ $y ];
 
 				if ( $state == 1 ) {
