@@ -70,7 +70,7 @@ class Life {
 					$xMax,
 					$yMax
 				);
-				// echo $i . ', ' . $y . ' count: ' . $count . PHP_EOL;
+
 				$state = $this->grid[ $i ][ $y ];
 
 				if ( $state == 1 ) {
