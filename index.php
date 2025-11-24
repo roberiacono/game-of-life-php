@@ -58,17 +58,17 @@ class Life {
 
 	public function runLife() {
 		$newGrid = array();
-
-		// echo count( $this->grid );
+		$xMax    = count( $this->grid );
 
 		foreach ( $this->grid as $i => $width ) {
 			$newGrid[ $i ] = array();
+			$yMax          = count( $width );
 			foreach ( $width as $y => $height ) {
 				$count = $this->countAdjacentCells(
 					$i,
 					$y,
-					count( $this->grid ),
-					count( $width )
+					$xMax,
+					$yMax
 				);
 				// echo $i . ', ' . $y . ' count: ' . $count . PHP_EOL;
 				$state = $this->grid[ $i ][ $y ];
