@@ -97,22 +97,16 @@ function render( Life $life ) {
 	return $output;
 }
 
-function clearScreen() {
-	// Clears screen and moves cursor to top-left
-	echo "\e[H\e[J";
-}
 
 $life = new Life();
 $life->createGrid();
-// echo render( $life );
 
 
 while ( true ) {
 	// Linux / macOS
 	// system('clear');
-	// system( 'cls' );
-	clearScreen();
 	// Windows
+	echo chr( 27 ) . '[H' . chr( 27 ) . '[J';
 	echo render( $life );
 	$life->runLife();
 	usleep( 500000 );
